@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - ./:/go/src/app
+    ports:
+      - "1323:1323"
+    depends_on:
+      - db-dev
+  db-dev:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    container_name: db-dev
+    restart: always
+    volumes:
+      - data-dev:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+
+volumes:
+  data-dev:
+    driver: local
